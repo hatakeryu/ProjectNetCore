@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Persons.Commands.Create;
+using Domain.Entities;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Application
 {
-  internal class DependencyInjection
+  public static class DependencyInjection
   {
+    public static IServiceCollection AddApplication(this IServiceCollection service, IConfiguration configuration)
+    {
+      service.AddMediatR(Assembly.GetExecutingAssembly());
+      service.AddScoped<IValidator<CreatePersonCommand>, CreatePersonCommandValidator>();
+
+      return service;
+    }
   }
 }

@@ -6,8 +6,8 @@ namespace Domain.Enums
   {
     [Description("CPF")]
     CPF = 1,
-    [Description("RG")]
-    RG = 2,
+    [Description("PIS")]
+    PIS = 2,
     [Description("CNPJ")]
     CNPJ = 3
   }
