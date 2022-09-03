@@ -1,17 +1,23 @@
 ﻿using Application.Persons.ViewModels;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Persistence;
+using Persistence.Mongo.Collections;
+using Persistence.Mongo.Interfaces;
 
 namespace Application.Persons.Commands.Create
 {
   internal class CreatePersonCommandHandler : IRequestHandler<CreatePersonCommand, PersonViewModel>
   {
     private readonly IProjectNetCoreDbContext _context;
-
-    public CreatePersonCommandHandler(IProjectNetCoreDbContext context)
+    private readonly IMapper _mapper;
+    private readonly IPersonMongoRepository _personMongo;
+    public CreatePersonCommandHandler(IProjectNetCoreDbContext context, IMapper mapper, IPersonMongoRepository personMongo)
     {
       _context = context;
+      _mapper = mapper;
+      _personMongo = personMongo;
     }
 
     public async Task<PersonViewModel> Handle(CreatePersonCommand request, CancellationToken cancellationToken)
@@ -22,13 +28,12 @@ namespace Application.Persons.Commands.Create
 
       if (result > 0)
       {
-        var viewModel = new PersonViewModel()
-        {
-          BirthDate = person.BirthDate,
-          Documents = person.Documents,
-          Id = person.Id,
-          Name = person.Name
-        };
+
+        var viewModel = _mapper.Map<PersonViewModel>(person);
+
+        var collection = _mapper.Map<PersonCollection>(viewModel);
+
+        _personMongo.Insert(collection);
 
         return viewModel;
       }

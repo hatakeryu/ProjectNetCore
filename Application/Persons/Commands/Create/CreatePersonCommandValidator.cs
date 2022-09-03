@@ -20,7 +20,7 @@ namespace Application.Persons.Commands.Create
 
     private void ValidateDocument(Document document, ValidationContext<CreatePersonCommand> context)
     {
-      if (!Domain.Entities.Document.ValidateDocument(document))
+      if (!Document.ValidateDocument(document))
       {
         context.AddFailure($"The {document.TypeDocument} informed is invalid.");
       }
