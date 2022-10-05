@@ -1,5 +1,4 @@
 using Application;
-using Application.Persons.Commands.Create;
 using FluentValidation.AspNetCore;
 using Persistence;
 using ProjectNetCore.Common;
@@ -19,7 +18,6 @@ builder.Services.AddMvc(options =>
   options.Filters.Add(typeof(ValidateModelStateAttribute));
 }).AddNewtonsoftJson();
 builder.Services.AddFluentValidationAutoValidation();
-
 
 var app = builder.Build();
 
